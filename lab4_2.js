@@ -26,7 +26,7 @@ function evaluatePostfixExpression(postfixExpression) {
 }
 
 async function main() {
-  const fileName = 'lab_4_2_test.txt';
+  const fileName = process.argv[2] || 'lab_4_2_test.txt';
   const file = await readDataFileAsync(fileName);
 
   const prefixExpressions = file.split('\n');

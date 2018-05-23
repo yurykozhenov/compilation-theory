@@ -15,7 +15,7 @@ function getStringConstants(code) {
 }
 
 async function main() {
-  const fileName = 'string_consts_to_file_test.pas';
+  const fileName = process.argv[2] || 'string_consts_to_file_test.pas';
   const file = await readDataFileAsync(fileName);
   await writeDistFileAsync(fileName, getStringConstants(file));
 }

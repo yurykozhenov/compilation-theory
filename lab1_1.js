@@ -41,7 +41,7 @@ function oneOperatorOneLine(code) {
 }
 
 async function main() {
-  const fileName = 'single_operator_in_line_test.pas';
+  const fileName = process.argv[2] || 'single_operator_in_line_test.pas';
   const file = await readDataFileAsync(fileName);
   await writeDistFileAsync(fileName, oneOperatorOneLine(file));
 }
