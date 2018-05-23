@@ -7,31 +7,22 @@ const {
 const { readDataFileAsync } = require('./util/file');
 
 function evaluatePrefixExpression(prefixExpression) {
-  const operatorStack = [];
-  const operandStack = [];
-  let pendingOperand = false;
+  prefixExpression = prefixExpression.reverse();
+  const stack = [];
 
   for (const token of prefixExpression) {
     if (isOperator(token)) {
-      operatorStack.push(token);
-      pendingOperand = false;
+      const operand1 = stack.pop();
+      const operand2 = stack.pop();
+      const result = applyOperator(token, operand1, operand2);
+
+      stack.push(result);
     } else if (isOperand(token)) {
-      let operand = token;
-
-      if (pendingOperand) {
-        while (operandStack.length > 0) {
-          const operand1 = operandStack.pop();
-          const operator = operatorStack.pop();
-          operand = applyOperator(operator, operand1, operand);
-        }
-      }
-
-      operandStack.push(operand);
-      pendingOperand = true;
+      stack.push(token);
     }
   }
 
-  return operandStack.pop();
+  return stack.pop();
 }
 
 async function main() {
