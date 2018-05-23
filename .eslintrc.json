@@ -3,16 +3,18 @@
   "rules": {
     "linebreak-style": "off",
     "arrow-parens": "off",
+    "function-paren-newline": "off",
     "no-restricted-syntax": "off",
     "no-console": "off",
+    "no-param-reassign": "off",
+    "no-await-in-loop": "off",
+    "no-continue": "off",
     "no-plusplus": "off",
     "no-underscore-dangle": "off",
     "padding-line-between-statements": [
       "error",
-      { "blankLine": "always", "prev": "block-line", "next": "*" },
-      { "blankLine": "always", "prev": "*", "next": "block-like" },
-      { "blankLine": "always", "prev": "multiline-block-like", "next": "*" },
-      { "blankLine": "always", "prev": "*", "next": "multiline-block-like" }
+      { "blankLine": "always", "prev": ["if", "while", "for"], "next": "*" },
+      { "blankLine": "always", "prev": "*", "next": ["if", "while", "for"] }
     ]
   }
 }

@@ -1,12 +1,4 @@
-const path = require('path');
-const util = require('util');
-const fs = require('fs');
-
-const readFileAsync = util.promisify(fs.readFile);
-const writeFileAsync = util.promisify(fs.writeFile);
-
-const inputPath = path.join(__dirname, 'data');
-const outputPath = path.join(__dirname, 'dist');
+const { readDataFileAsync, writeDistFileAsync } = require('./util/file');
 
 function stripComments(code) {
   return code
@@ -16,8 +8,8 @@ function stripComments(code) {
 
 async function main() {
   const fileName = 'delete_comments_test.cpp';
-  const file = await readFileAsync(path.join(inputPath, fileName), 'utf-8');
-  await writeFileAsync(path.join(outputPath, fileName), stripComments(file));
+  const file = await readDataFileAsync(fileName);
+  await writeDistFileAsync(fileName, stripComments(file));
 }
 
 main();
