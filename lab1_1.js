@@ -21,11 +21,6 @@ const OPERATORS = [
   '>>',
   ':=',
   ';',
-  'and',
-  'and then',
-  'or',
-  'or else',
-  'not',
 ];
 
 function oneOperatorOneLine(code) {
@@ -41,7 +36,7 @@ function oneOperatorOneLine(code) {
 }
 
 async function main() {
-  const fileName = process.argv[2] || 'single_operator_in_line_test.pas';
+  const fileName = process.argv[2] || 'main.pas';
   const file = await readDataFileAsync(fileName);
   await writeDistFileAsync(fileName, oneOperatorOneLine(file));
 }

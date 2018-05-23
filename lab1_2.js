@@ -7,7 +7,7 @@ function stripComments(code) {
 }
 
 async function main() {
-  const fileName = process.argv[2] || 'delete_comments_test.cpp';
+  const fileName = process.argv[2] || 'main.cpp';
   const file = await readDataFileAsync(fileName);
   await writeDistFileAsync(fileName, stripComments(file));
 }

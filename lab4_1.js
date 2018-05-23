@@ -35,7 +35,7 @@ function evaluatePrefixExpression(prefixExpression) {
 }
 
 async function main() {
-  const fileName = process.argv[2] || 'lab_4_1_test.txt';
+  const fileName = process.argv[2] || 'lab4_1.txt';
   const file = await readDataFileAsync(fileName);
 
   const prefixExpressions = file.split('\n');
