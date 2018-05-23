@@ -1,6 +1,7 @@
 const path = require('path');
 const util = require('util');
 const fs = require('fs');
+
 const readFileAsync = util.promisify(fs.readFile);
 const writeFileAsync = util.promisify(fs.writeFile);
 
@@ -8,7 +9,9 @@ const inputPath = path.join(__dirname, 'data');
 const outputPath = path.join(__dirname, 'dist');
 
 function toChar(pascalSymbolCode) {
-  return String.fromCharCode(Number(pascalSymbolCode.substring(2, pascalSymbolCode.length - 1)));
+  return String.fromCharCode(
+    Number(pascalSymbolCode.substring(2, pascalSymbolCode.length - 1)),
+  );
 }
 
 function getStringConstants(code) {
@@ -22,7 +25,10 @@ function getStringConstants(code) {
 async function main() {
   const fileName = 'string_consts_to_file_test.pas';
   const file = await readFileAsync(path.join(inputPath, fileName), 'utf-8');
-  await writeFileAsync(path.join(outputPath, fileName), getStringConstants(file));
+  await writeFileAsync(
+    path.join(outputPath, fileName),
+    getStringConstants(file),
+  );
 }
 
 main();
