@@ -17,6 +17,7 @@
     "prettier": "^1.12.1"
   },
   "dependencies": {
+    "lodash": "^4.17.10",
     "treeify": "^1.1.0"
   }
 }
