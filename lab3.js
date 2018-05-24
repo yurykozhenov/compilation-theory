@@ -21,7 +21,7 @@ async function main() {
     expression.push(node);
   }
 
-  tree.makeTree(expression);
+  tree.fromPrefixExpression(expression);
   console.log('\nЗначення виразу:', await tree.evaluate());
   tree.print();
 }

@@ -27,13 +27,10 @@ function hash4(str) {
 }
 
 function rehesh(hashValue) {
-  const perturb = hashValue >> hashValue;
-  const j = 5 * hashValue + 1 + perturb;
-
-  return j % ARRAY_LENGTH;
+  return (5 * hashValue + 1 + (hashValue >> hashValue)) % ARRAY_LENGTH;
 }
 
-function setArrayValue(array, value, hashValue, collisions) {
+function setValue(array, value, hashValue, collisions) {
   do {
     if (array[hashValue] == null) {
       array[hashValue] = value;
@@ -46,26 +43,26 @@ function setArrayValue(array, value, hashValue, collisions) {
   } while (true);
 }
 
-function fullArray(oldArray, hash, values) {
-  const array = oldArray.slice();
-  let collisions = 0;
+function fill(array, hashFunction, values) {
+  const newArray = array.slice();
   const comparisons = [];
+  let collisions = 0;
 
   for (const value of values) {
-    const hashValue = hash(value, ARRAY_LENGTH);
-    const resultCollisions = setArrayValue(array, value, hashValue, 0);
+    const hashValue = hashFunction(value, ARRAY_LENGTH);
+    const resultCollisions = setValue(newArray, value, hashValue, 0);
     collisions += resultCollisions;
     comparisons.push(resultCollisions);
   }
 
-  return [array, collisions, comparisons];
+  return [newArray, collisions, comparisons];
 }
 
 function testHashFunction(hashFunction, file1, file2) {
   const startArray = new Array(ARRAY_LENGTH);
 
-  const [array] = fullArray(startArray, hashFunction, file1.split('\n'));
-  const [, collisions, comparisons] = fullArray(
+  const [array] = fill(startArray, hashFunction, file1.split('\n'));
+  const [, collisions, comparisons] = fill(
     array,
     hashFunction,
     file2.split('\n'),

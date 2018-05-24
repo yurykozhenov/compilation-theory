@@ -39,22 +39,22 @@ exports.Tree = class Tree {
     this.root = stack.pop();
   }
 
-  makeTree(expression) {
+  fromPrefixExpression(expression) {
     if (expression.length > 0) {
       this.root = new Node(expression[0]);
     }
 
     if (expression.length > 0) {
-      this._makeTree(this.root, expression.slice(1));
+      this._fromPrefixExpression(this.root, expression.slice(1));
     }
   }
 
-  _makeTree(node, expression) {
+  _fromPrefixExpression(node, expression) {
     if (node.left == null) {
       node.left = new Node(expression.shift());
 
       if (expression.length > 0) {
-        this._makeTree(
+        this._fromPrefixExpression(
           isOperator(node.left.data) ? node.left : node,
           expression,
         );
@@ -65,7 +65,7 @@ exports.Tree = class Tree {
       node.right = new Node(expression.shift());
 
       if (expression.length > 0) {
-        this._makeTree(
+        this._fromPrefixExpression(
           isOperator(node.right.data) ? node.right : node,
           expression,
         );
@@ -73,26 +73,26 @@ exports.Tree = class Tree {
     }
   }
 
-  preOrder(node) {
+  traverseTree(node) {
     if (node == null) {
       return;
     }
 
     this.nodesValues.push(node.data);
 
-    this.preOrder(node.left);
-    this.preOrder(node.right);
+    this.traverseTree(node.left);
+    this.traverseTree(node.right);
   }
 
   async evaluate() {
     this.nodesValues = [];
-    this.preOrder(this.root);
+    this.traverseTree(this.root);
     const parsedExpression = await parseExpression(this.nodesValues.join(' '));
 
     return evaluatePrefixExpression(parsedExpression);
   }
 
-  _makeObject(obj, expression) {
+  makeObject(obj, expression) {
     if (obj.left == null) {
       delete obj.left;
       const value = expression.shift();
@@ -102,7 +102,7 @@ exports.Tree = class Tree {
           left: null,
           right: null,
         };
-        this._makeObject(isOperator(value) ? obj[value] : obj, expression);
+        this.makeObject(obj[value], expression);
       } else {
         obj[value] = null;
       }
@@ -117,7 +117,7 @@ exports.Tree = class Tree {
           left: null,
           right: null,
         };
-        this._makeObject(isOperator(value) ? obj[value] : obj, expression);
+        this.makeObject(obj[value], expression);
       } else {
         obj[value] = null;
       }
@@ -126,7 +126,7 @@ exports.Tree = class Tree {
 
   print() {
     this.nodesValues = [];
-    this.preOrder(this.root);
+    this.traverseTree(this.root);
     const expression = this.nodesValues;
 
     if (expression.length > 0) {
@@ -137,7 +137,7 @@ exports.Tree = class Tree {
     }
 
     if (expression.length > 0) {
-      this._makeObject(this.obj[expression[0]], expression.slice(1));
+      this.makeObject(this.obj[expression[0]], expression.slice(1));
     }
 
     console.log(treeify.asTree(this.obj));
