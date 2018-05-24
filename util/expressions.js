@@ -29,12 +29,14 @@ exports.parseExpression = async expression =>
     .split(' ')
     .map(x => (!Number.isNaN(Number(x)) ? Number(x) : x));
 
-exports.isOperator = token => Object.keys(OPERATORS).includes(token);
-
-exports.isOperand = token => typeof token === 'number';
-
-exports.applyOperator = (operator, operand1, operand2) =>
+const isOperator = token => Object.keys(OPERATORS).includes(token);
+const isOperand = token => typeof token === 'number';
+const applyOperator = (operator, operand1, operand2) =>
   OPERATORS[operator](operand1, operand2);
+
+exports.isOperator = isOperator;
+exports.isOperand = isOperand;
+exports.applyOperator = applyOperator;
 
 const OPERATORS_PRECEDENCE = {
   '^': 4,
@@ -64,7 +66,8 @@ exports.infixExpressionToPostfix = expression => {
     } else {
       while (
         stack.length > 0 &&
-        OPERATORS_PRECEDENCE[stack[stack.length - 1]] >= OPERATORS_PRECEDENCE[token]
+        OPERATORS_PRECEDENCE[stack[stack.length - 1]] >=
+          OPERATORS_PRECEDENCE[token]
       ) {
         postfixList.push(stack.pop());
       }
@@ -78,4 +81,23 @@ exports.infixExpressionToPostfix = expression => {
   }
 
   return postfixList.join(' ');
+};
+
+exports.evaluatePrefixExpression = prefixExpression => {
+  prefixExpression = prefixExpression.reverse();
+  const stack = [];
+
+  for (const token of prefixExpression) {
+    if (isOperator(token)) {
+      const operand1 = stack.pop();
+      const operand2 = stack.pop();
+      const result = applyOperator(token, operand1, operand2);
+
+      stack.push(result);
+    } else if (isOperand(token)) {
+      stack.push(token);
+    }
+  }
+
+  return stack.pop();
 };

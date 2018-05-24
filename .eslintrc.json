@@ -9,6 +9,8 @@
     "no-param-reassign": "off",
     "no-await-in-loop": "off",
     "no-continue": "off",
+    "no-bitwise": "off",
+    "no-mixed-operators": "off",
     "no-plusplus": "off",
     "no-underscore-dangle": "off",
     "padding-line-between-statements": [
